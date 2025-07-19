@@ -154,7 +154,14 @@ class PlatformFFI {
       try {
         if (isAndroid) {
           // only support for android
-          _homeDir = (await ExternalPath.getExternalStorageDirectories())[0];
+final dirs = await ExternalPath.getExternalStorageDirectories();
+if (dirs != null && dirs.isNotEmpty) {
+  _homeDir = dirs[0];
+} else {
+  _homeDir = ''; // fallback to empty string if not found
+}
+
+
         } else if (isIOS) {
           _homeDir = _ffiBind.mainGetDataDirIos();
         } else {
